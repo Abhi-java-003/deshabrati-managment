@@ -40,7 +40,6 @@ public class ArticleService {
   private final AuthorsRepository authorsRepository;
   private final PrintIssuesRepository printIssuesRepository;
   private final HomePageConfigRepository homePageConfigRepository;
-  private final Authentication authentication;
 
   public ArticleService(
       MongoTemplate mongoTemplate,
@@ -53,7 +52,6 @@ public class ArticleService {
     this.authorsRepository = authorsRepository;
     this.printIssuesRepository = printIssuesRepository;
     this.homePageConfigRepository = homePageConfigRepository;
-    authentication = SecurityContextHolder.getContext().getAuthentication();
   }
 
   public ArticleListResponseDto getArticles(
@@ -172,6 +170,7 @@ public class ArticleService {
     updatedArticle.setCreatedAt(existingArticle.getCreatedAt());
     updatedArticle.setUpdatedAt(Instant.now());
     updatedArticle.setDeletedAt(existingArticle.getDeletedAt());
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (updatedArticle.getStatus() == ArticleStatus.PUBLISHED
         && authentication.getAuthorities().stream()
             .anyMatch(auth -> auth.getAuthority().equals(Permission.ARTICLE_PUBLISH.getValue()))) {
