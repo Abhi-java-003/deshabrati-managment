@@ -244,8 +244,8 @@ public class ArticleService {
   }
 
   private void validateReferences(Articles article) {
-    if (StringUtils.isBlank(article.getAuthorId())
-        || StringUtils.isBlank(article.getPrintIssueId())) {
+    String printIssueId = StringUtils.isBlank(article.getPrintIssueId()) ? "" : article.getPrintIssueId();
+    if (StringUtils.isBlank(article.getAuthorId())) {
       throw new NullPointerException("Author ID and Print Issue ID cannot be null or blank");
     }
     if (article.getAuthorId() != null
@@ -253,9 +253,8 @@ public class ArticleService {
         && authorsRepository.findByIdAndNotDeleted(article.getAuthorId()).isEmpty()) {
       throw new ResourceNotFound("Author not found or is deleted");
     }
-    if (article.getPrintIssueId() != null
-        && !article.getPrintIssueId().isBlank()
-        && printIssuesRepository.findByIdAndNotDeleted(article.getPrintIssueId()).isEmpty()) {
+    if(PublicationSource.DB_PRINT.equals(article.getPublicationSource())
+        && printIssuesRepository.findByIdAndNotDeleted(printIssueId).isEmpty()) {
       throw new ResourceNotFound("Print issue not found or is deleted");
     }
   }

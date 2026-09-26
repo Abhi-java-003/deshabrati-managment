@@ -33,9 +33,7 @@ public class Users {
   private Status status;
   private PreferredLanguage preferredLanguage;
   private List<Permission> permissions;
-  private String passwordResetToken;
-  private Instant passwordResetTokenExpiresAt;
-  private Instant lastLoginAt;
+    private Instant lastLoginAt;
   private Instant createdAt;
   private Instant updatedAt;
   private Instant deletedAt;
@@ -120,22 +118,6 @@ public class Users {
     this.permissions = permissions;
   }
 
-  public String getPasswordResetToken() {
-    return passwordResetToken;
-  }
-
-  public void setPasswordResetToken(String passwordResetToken) {
-    this.passwordResetToken = passwordResetToken;
-  }
-
-  public Instant getPasswordResetTokenExpiresAt() {
-    return passwordResetTokenExpiresAt;
-  }
-
-  public void setPasswordResetTokenExpiresAt(Instant passwordResetTokenExpiresAt) {
-    this.passwordResetTokenExpiresAt = passwordResetTokenExpiresAt;
-  }
-
   public Instant getLastLoginAt() {
     return lastLoginAt;
   }
@@ -201,11 +183,6 @@ public class Users {
         + preferredLanguage
         + ", permissions="
         + permissions
-        + ", passwordResetToken='"
-        + passwordResetToken
-        + '\''
-        + ", passwordResetTokenExpiresAt="
-        + passwordResetTokenExpiresAt
         + ", lastLoginAt="
         + lastLoginAt
         + ", createdAt="

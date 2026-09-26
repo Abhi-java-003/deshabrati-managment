@@ -1,32 +1,4 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b  # frozen: v5.0.0
-    hooks:
-      #      - id: no-commit-to-branch
-      #        name: "Check branch naming convention"
-      #        args: [ '--branch', 'main', '--branch', 'master',
-      #                '--pattern', '(?!((^(improvement|bug|feature|test|tmp)\/HXCS-[0-9]+)*-[A-Za-z0-9._-]+$))' ]
-      #        verbose: true
-      - id: fix-byte-order-marker
-      - id: mixed-line-ending
-        args: [ '--fix=lf' ]
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-      - id: check-yaml
-        args: [ --allow-multiple-documents ]
-        exclude: '.*/templates|.updatecli/templates'
-      - id: check-xml
-      - id: check-merge-conflict
-      - id: detect-aws-credentials
-        args:
-          - --allow-missing-credentials
-      - id: detect-private-key
-
-  - repo: https://github.com/sirwart/ripsecrets.git
-    rev: 033ec5192b738b6712701be920cba545c2775050  # frozen: v0.1.8
-    hooks:
-      - id: ripsecrets
-
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks.git
     id: google-java-formatter
     name: "Google Java Formatter"

@@ -11,9 +11,6 @@ public interface UsersRepository extends MongoRepository<Users, String> {
   @Query("{ 'email': ?0, 'deletedAt': null }")
   Optional<Users> findByEmail(String email);
 
-  @Query("{ 'passwordResetToken': ?0, 'deletedAt': null }")
-  Optional<Users> findByPasswordResetToken(String passwordResetToken);
-
   @Query("{ '_id': ?0, 'deletedAt': null }")
   Optional<Users> findByIdAndNotDeleted(String id);
 
