@@ -148,34 +148,24 @@ public class UserService {
     }
 
     Users user = userAuthentication.loadUserDocumentByEmail(email);
-    user.setPasswordResetToken(UUID.randomUUID().toString());
-    user.setPasswordResetTokenExpiresAt(Instant.now().plus(15, ChronoUnit.MINUTES));
     user.setUpdatedAt(Instant.now());
     usersRepository.save(user);
   }
 
   public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
-    String token = resetPasswordRequest.getToken();
+    String currentPassword = resetPasswordRequest.getCurrentPassword();
     String newPassword = resetPasswordRequest.getNewPassword();
-    if (token == null || token.isBlank()) {
-      throw new InvalidRequestException("Reset token is required");
+    if (StringUtils.isBlank(currentPassword)) {
+      throw new InvalidRequestException("Current password is required");
     }
-    if (newPassword == null || newPassword.isBlank()) {
+    if (StringUtils.isBlank(newPassword)) {
       throw new InvalidRequestException("New password is required");
     }
-
-    Users user =
-        usersRepository
-            .findByPasswordResetToken(token)
-            .orElseThrow(() -> new TokenInvalidException("Reset token is invalid"));
-    Instant expiresAt = user.getPasswordResetTokenExpiresAt();
-    if (expiresAt == null || expiresAt.isBefore(Instant.now())) {
-      throw new TokenExpiredException("Reset token has expired");
+    Users user = userAuthentication.loadUserDocumentByEmail(resetPasswordRequest.getEmail());
+    if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+      throw new InvalidRequestException("Current password is incorrect");
     }
-
     user.setPasswordHash(passwordEncoder.encode(newPassword));
-    user.setPasswordResetToken(null);
-    user.setPasswordResetTokenExpiresAt(null);
     user.setUpdatedAt(Instant.now());
     usersRepository.save(user);
   }
